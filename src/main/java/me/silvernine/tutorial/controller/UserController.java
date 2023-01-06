@@ -25,12 +25,14 @@ public class UserController {
     }
 
     @GetMapping("/user")
+    // USER, ADMIN 두 가지 권한 모두 허용
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
     public ResponseEntity<User> getMyUserInfo() {
         return ResponseEntity.ok(userService.getMyUserWithAuthorities().get());
     }
 
     @GetMapping("/user/{username}")
+    // ADMIN 권한만 호출
     @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<User> getUserInfo(@PathVariable String username) {
         return ResponseEntity.ok(userService.getUserWithAuthorities(username).get());

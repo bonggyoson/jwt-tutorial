@@ -12,6 +12,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Collections;
 import java.util.Optional;
 
+/**
+ * 회원가입, 유저정보조회 등의 메소드
+ */
 @Service
 public class UserService {
     private final UserRepository userRepository;
@@ -22,6 +25,7 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    // 회원가입
     @Transactional
     public User signup(UserDto userDto) {
         if (userRepository.findOneWithAuthoritiesByUsername(userDto.getUsername()).orElse(null) != null) {
@@ -43,11 +47,14 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    // 유저, 권한정보를 가져오는 메소드
+    // username을 기준으로 정보를 가져온다.
     @Transactional(readOnly = true)
     public Optional<User> getUserWithAuthorities(String username) {
         return userRepository.findOneWithAuthoritiesByUsername(username);
     }
 
+    // SecurityContext에 저장된 username의 정보만 가져온다.
     @Transactional(readOnly = true)
     public Optional<User> getMyUserWithAuthorities() {
         return SecurityUtil.getCurrentUsername().flatMap(userRepository::findOneWithAuthoritiesByUsername);

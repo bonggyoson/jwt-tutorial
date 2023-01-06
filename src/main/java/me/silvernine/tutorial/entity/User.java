@@ -9,7 +9,7 @@ import java.util.Collection;
 import java.util.Set;
 
 @Entity
-@Table(name = "`USER`")
+@Table(name = "`user`")
 @Getter
 @Setter
 @Builder
@@ -34,6 +34,7 @@ public class User {
     @Column(name = "activated")
     private boolean activated;
 
+    // User객체와 권한객체의 테이블의 다대다 관계를 일대다, 다대일 관계의 조인 테이블로 정의했다는 뜻
     @ManyToMany
     @JoinTable(
             name = "user_authority",
